@@ -1,5 +1,9 @@
 {
-  "description": "Browse a curated product catalog with clear product details and a prominent Wrecz AI assistant button for quick, streamlined help.",
+  "title": "Wrecz AI Shop",
+  "description": "Browse a curated Nike product catalog with clear product details and a prominent Wrecz AI assistant for quick, personalized shopping recommendations.",
+  "icons": {
+    "icon": "/favicon.svg"
+  },
   "robots": {
     "index": false
   },
