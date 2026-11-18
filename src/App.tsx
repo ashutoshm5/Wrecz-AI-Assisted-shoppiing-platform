@@ -98,12 +98,9 @@ export default function App() {
           {/* AI Filter Notice */}
           {aiFilterIds && (
             <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border border-black bg-black p-4 text-white">
-              <div className="flex items-center gap-3">
-                <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                <div>
-                  <p className="font-mono text-[11px] uppercase tracking-wider text-white/60">Gemini AI Recommendations Active</p>
-                  <p className="text-[13px] font-medium text-white/95 line-clamp-1">Showing {filtered.length} picks matching your request</p>
-                </div>
+              <div>
+                <p className="font-mono text-[11px] uppercase tracking-wider text-white/60">Wrecz recommendation below</p>
+                <p className="text-[13px] font-medium text-white/95 line-clamp-1">Showing {filtered.length} picks matching your request</p>
               </div>
               <button
                 onClick={clearAiFilter}

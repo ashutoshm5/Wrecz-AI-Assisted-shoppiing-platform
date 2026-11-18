@@ -26,7 +26,7 @@ export default function Wrecz({
   const [messages, setMessages] = useState<Msg[]>([
     {
       from: 'wrecz',
-      text: "I'm Wrecz, your Nike AI stylist powered by Gemini. Tell me what you're training for, your budget or a style, and I'll pull live picks from the catalogue.",
+      text: "I'm Wrecz, your Nike AI stylist. Tell me what you're training for, your budget or a style, and I'll pull live picks from the catalogue.",
     },
   ])
   const listRef = useRef<HTMLDivElement>(null)
@@ -83,8 +83,8 @@ export default function Wrecz({
         <div className="animate-rise fixed inset-x-3 bottom-28 z-40 mx-auto flex max-h-[min(580px,75dvh)] max-w-[440px] flex-col border border-black bg-white shadow-[8px_8px_0_0_#000]">
           <div className="flex items-center justify-between border-b border-black px-4 py-3">
             <div className="flex items-center gap-2">
-              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-mono text-[12px] uppercase tracking-wider">Wrecz / Gemini AI Stylist</span>
+              <span className="size-2 rounded-full bg-black" />
+              <span className="font-mono text-[12px] uppercase tracking-wider">Wrecz / AI stylist</span>
             </div>
             <button onClick={() => setOpen(false)} className="font-mono text-[12px] uppercase hover:underline">
               Close
@@ -133,7 +133,7 @@ export default function Wrecz({
             {loading && (
               <div className="flex items-center gap-2.5 py-2 text-black/60">
                 <span className="size-2 rounded-full bg-black animate-ping" />
-                <span className="font-mono text-[12px] uppercase">Wrecz is styling with Gemini...</span>
+                <span className="font-mono text-[12px] uppercase">Wrecz is diggin...</span>
               </div>
             )}
 
@@ -160,7 +160,7 @@ export default function Wrecz({
               value={input}
               disabled={loading}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={loading ? 'Wrecz is styling...' : 'Ask Wrecz anything (e.g. shoes under $100)...'}
+              placeholder={loading ? 'Wrecz is diggin...' : 'Ask Wrecz anything (e.g. shoes under $100)...'}
               className="flex-1 bg-transparent px-4 py-3 text-[14px] outline-none placeholder:text-black/40 disabled:opacity-50"
             />
             <button
