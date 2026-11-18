@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Google Sans Flex', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --color-paper: #f3f3f1;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white font-sans text-black antialiased;
+  }
+  ::selection {
+    background: #000;
+    color: #fff;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise {
+  animation: rise 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Skeuomorphic black pill used for the Wrecz button */
+.wrecz-pill {
+  background:
+    radial-gradient(120% 140% at 85% 50%, #4a4c52 0%, rgba(30, 31, 34, 0) 55%),
+    linear-gradient(180deg, #2a2b2f 0%, #0c0c0e 100%);
+  box-shadow:
+    0 0 0 3px #d9d9db,
+    0 0 0 4px #b9b9bc,
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.6),
+    0 18px 30px -10px rgba(0, 0, 0, 0.45),
+    0 30px 60px -20px rgba(0, 0, 0, 0.35);
+}
+
+.wrecz-knob {
+  background: linear-gradient(180deg, #ffffff 0%, #e9e9ea 100%);
+  box-shadow:
+    inset 0 -2px 3px rgba(0, 0, 0, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
