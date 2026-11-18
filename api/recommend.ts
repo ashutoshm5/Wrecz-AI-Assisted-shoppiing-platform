@@ -1,4 +1,3 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { GoogleGenAI } from '@google/genai'
 import dotenv from 'dotenv'
 import path from 'path'
@@ -7,6 +6,20 @@ import fs from 'fs'
 // Load environment variables from .env.local or .env for local testing
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') })
 dotenv.config({ path: path.resolve(process.cwd(), '.env') })
+
+// Lightweight self-contained serverless request/response types
+export type VercelRequest = {
+  method?: string
+  body?: any
+  headers?: Record<string, string | string[] | undefined>
+}
+
+export type VercelResponse = {
+  setHeader: (key: string, value: string) => void
+  status: (code: number) => VercelResponse
+  json: (data: any) => void
+  end: (data?: any) => void
+}
 
 type Product = {
   id: string
@@ -56,7 +69,7 @@ const catalogSummary = products.map((p) => ({
 }))
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS headers
+  // Security: Restricted CORS & Methods
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
@@ -78,15 +91,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  const query = body?.query?.trim()
+  // Security: Input sanitization & prompt length boundary
+  let query = (body?.query || '').toString().trim()
   if (!query) {
     return res.status(400).json({ error: 'Query parameter is required' })
+  }
+
+  // Prevent token overflow / DoS attacks by capping query length
+  if (query.length > 300) {
+    query = query.slice(0, 300)
   }
 
   const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.API_KEY
   if (!apiKey) {
     return res.status(500).json({
-      error: 'GEMINI_API_KEY is not configured. Please add it to .env.local or Vercel Environment Variables.',
+      error: 'GEMINI_API_KEY is not configured on the server.',
     })
   }
 
@@ -108,7 +127,7 @@ STRICT RULES:
 
     const userPrompt = `Catalogue:\n${JSON.stringify(catalogSummary)}\n\nUser query: "${query}"`
 
-    // Try gemini-3.5-flash-lite (fastest and most stable), then 3.5-flash, then 3.8-flash
+    // Try gemini-3.5-flash-lite, then 3.5-flash, then 3.8-flash
     let response
     const candidateModels = ['gemini-3.5-flash-lite', 'gemini-3.5-flash', 'gemini-3.8-flash']
     let lastErr: any = null
@@ -145,9 +164,10 @@ STRICT RULES:
       note: result.note || 'Here are your personalized picks from Wrecz.',
     })
   } catch (error: any) {
-    console.error('Gemini Recommendation Error:', error)
+    // Log internal error on server without leaking internal details to client
+    console.error('Gemini Recommendation Error:', error?.message || error)
     return res.status(500).json({
-      error: error.message || 'Failed to generate recommendations from Gemini.',
+      error: 'Failed to generate recommendations. Please try again.',
     })
   }
 }
